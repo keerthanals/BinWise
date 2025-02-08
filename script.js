@@ -1,81 +1,125 @@
-// Get elements
+// DOM Elements
 const video = document.getElementById('video');
-const captureButton = document.getElementById('capture');
-const switchCameraButton = document.createElement('button');
 const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
+const captureButton = document.getElementById('capture');
+const switchCameraButton = document.getElementById('switchCamera');
+const preview = document.getElementById('preview');
+const capturedImage = document.getElementById('capturedImage');
+const retakeButton = document.getElementById('retake');
+const downloadButton = document.getElementById('download');
+const uploadInput = document.getElementById('upload');
 
-let currentStream = null; // Track current camera stream
-let cameras = []; // Store available cameras
-let currentCameraIndex = 0; // Track which camera is in use
+// Global variables
+let currentStream = null;
+let cameras = [];
+let currentCameraIndex = 0;
 
-// Create Switch Camera Button
-switchCameraButton.innerText = "🔄 Switch Camera";
-switchCameraButton.style.position = "absolute";
-switchCameraButton.style.top = "10px";
-switchCameraButton.style.right = "10px";
-switchCameraButton.style.padding = "10px";
-switchCameraButton.style.background = "#007bff";
-switchCameraButton.style.color = "white";
-switchCameraButton.style.border = "none";
-switchCameraButton.style.borderRadius = "5px";
-switchCameraButton.style.cursor = "pointer";
-document.body.appendChild(switchCameraButton);
-
-// Function to get available cameras
-async function getCameras() {
+// Initialize camera functionality
+async function initializeCamera() {
     try {
         const devices = await navigator.mediaDevices.enumerateDevices();
         cameras = devices.filter(device => device.kind === 'videoinput');
-        console.log("Available Cameras:", cameras);
-
+        
         if (cameras.length > 0) {
-            startCamera(cameras[currentCameraIndex].deviceId);
+            await startCamera(cameras[currentCameraIndex].deviceId);
+            switchCameraButton.style.display = cameras.length > 1 ? 'block' : 'none';
+        } else {
+            console.error('No cameras found');
         }
     } catch (error) {
-        console.error("Error accessing cameras:", error);
+        console.error('Error initializing camera:', error);
     }
 }
 
-// Function to start the camera
+// Start camera with specified device ID
 async function startCamera(deviceId) {
     if (currentStream) {
-        // Stop the previous stream before switching
         currentStream.getTracks().forEach(track => track.stop());
     }
 
     try {
         const constraints = {
-            video: { deviceId: { exact: deviceId } }
+            video: {
+                deviceId: deviceId ? { exact: deviceId } : undefined,
+                facingMode: 'environment',
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
+            }
         };
 
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         currentStream = stream;
         video.srcObject = stream;
+        
+        // Wait for video to be ready
+        await new Promise((resolve) => {
+            video.onloadedmetadata = () => resolve();
+        });
+        
+        // Start playing
+        await video.play();
     } catch (error) {
-        console.error("Error starting camera:", error);
+        console.error('Error starting camera:', error);
     }
 }
 
-// Capture image
-captureButton.addEventListener('click', () => {
+// Capture photo
+function capturePhoto() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext('2d');
+    
+    // Flip horizontally if using front camera
+    if (cameras[currentCameraIndex]?.label?.toLowerCase().includes('front')) {
+        context.scale(-1, 1);
+        context.translate(-canvas.width, 0);
+    }
+    
+    context.drawImage(video, 0, 0);
+    
+    // Show preview
+    capturedImage.src = canvas.toDataURL('image/png');
+    preview.classList.remove('hidden');
+}
 
-    const imageData = canvas.toDataURL('image/png');
-    localStorage.setItem('capturedImage', imageData);
-
-    window.location.href = 'preview.html';
-});
-
-// Switch Camera Button Click
-switchCameraButton.addEventListener('click', () => {
+// Switch camera
+function switchCamera() {
     if (cameras.length > 1) {
-        currentCameraIndex = (currentCameraIndex + 1) % cameras.length; // Switch camera index
+        currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
         startCamera(cameras[currentCameraIndex].deviceId);
     }
-});
+}
 
-// Get and start the camera on load
-getCameras();
+// Handle file upload
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            capturedImage.src = e.target.result;
+            preview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Download image
+function downloadImage() {
+    const link = document.createElement('a');
+    link.download = 'binwise-capture.png';
+    link.href = capturedImage.src;
+    link.click();
+}
+
+// Event Listeners
+captureButton.addEventListener('click', capturePhoto);
+switchCameraButton.addEventListener('click', switchCamera);
+retakeButton.addEventListener('click', () => {
+    preview.classList.add('hidden');
+    uploadInput.value = '';
+});
+downloadButton.addEventListener('click', downloadImage);
+uploadInput.addEventListener('change', handleFileUpload);
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initializeCamera);

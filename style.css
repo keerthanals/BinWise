@@ -1,116 +1,209 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: #f4f4f4;
+:root {
+    --primary-color: #0066ff;
+    --primary-hover: #0052cc;
+    --background: #f8f9fa;
+    --surface: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --border-radius: 16px;
+    --spacing: 24px;
+}
+
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.container {
-    max-width: 400px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-h1 {
-    font-size: 22px;
-    margin-bottom: 10px;
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
 }
 
-.camera {
+.app-header {
+    padding: var(--spacing);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+}
+
+.camera-container {
+    padding: var(--spacing);
+}
+
+.camera-view {
     position: relative;
     width: 100%;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 4/3;
 }
 
-video, canvas {
+video {
     width: 100%;
-    border-radius: 10px;
+    height: 100%;
+    object-fit: cover;
 }
 
 canvas {
     display: none;
 }
 
-.buttons {
-    margin-top: 10px;
+.camera-controls {
+    margin-top: var(--spacing);
+    display: flex;
+    justify-content: center;
 }
 
-button, input[type="file"] {
+.capture-button {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid var(--primary-color);
+    padding: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.capture-button-inner {
     display: block;
     width: 100%;
-    margin: 5px 0;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--primary-color);
+    transition: transform 0.2s ease;
+}
+
+.capture-button:hover .capture-button-inner {
+    transform: scale(0.9);
+}
+
+.capture-button:active {
+    transform: scale(0.95);
+}
+
+.file-upload {
+    margin-top: var(--spacing);
+}
+
+.upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
     cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
 }
 
-button {
-    background: #007BFF;
-    color: white;
+.upload-label:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--text-primary);
 }
 
-button:hover {
-    background: #0056b3;
+input[type="file"] {
+    display: none;
 }
 
 .preview {
-    margin-top: 20px;
-}
-
-#capturedImage {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    border-radius: 10px;
-    display: none;
-}
-/* Centering the container */
-.container {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    text-align: center;
-    background-color: #f8f9fa;
+    padding: var(--spacing);
+    z-index: 1000;
 }
 
-/* Styling the preview image */
-.preview img {
-    max-width: 90%;  /* Ensures the image doesn't exceed the screen width */
-    max-height: 80vh; /* Ensures the image fits within the viewport height */
-    border-radius: 10px; /* Optional: Adds rounded corners */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow */
+.preview.hidden {
+    display: none;
 }
 
-/* Back button styling */
-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
+.preview-content {
+    width: 100%;
+    max-width: 480px;
+}
+
+.preview-content img {
+    width: 100%;
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing);
+}
+
+.preview-controls {
+    display: flex;
+    gap: 12px;
+}
+
+.preview-controls button {
+    flex: 1;
+    padding: 16px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-button {
-    padding: 10px 15px;
+    border-radius: 12px;
     font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
+.secondary-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.primary-button {
+    background: var(--primary-color);
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--primary-hover);
 }
