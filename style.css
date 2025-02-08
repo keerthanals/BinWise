@@ -231,3 +231,9 @@ input[type="file"] {
 .primary-button:hover {
     background: var(--primary-hover);
 }
+
+.grp{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
