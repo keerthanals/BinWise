@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import io
@@ -23,26 +23,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.post("/score")
-async def get_score(request: Request):
- 
-        data: Dict = await request.json()
-        image_data = data.get("image")
+async def get_recycle_score(image: UploadFile = File(...)):
+    try:
+        contents = await image.read()
+        image = Image.open(io.BytesIO(contents)).convert("RGB") # Convert to RGB to handle various image formats
 
-        if not image_data:
-            raise HTTPException(status_code=400, detail="No image data provided")
+      
 
-        # Decode base64 image
-        try:
-            image_bytes = base64.b64decode(image_data.split(",")[1])  # Remove data URL prefix
-            image = Image.open(io.BytesIO(image_bytes))
-        except Exception as e:
-            raise HTTPException(status_code=400, detail=f"Error decoding image: {e}")
-
-        response = client.models.generate_content(
-            model="gemini-1.5-pro",
-            contents=["""give the recycle score value for the given image in total of 100. based on how different way it can be recycled.
+    except Exception as e:
+        print(f"Error processing image: {e}") # Print error for debugging
+        raise HTTPException(status_code=500, detail=f"Error processing image: {e}")
+    response = client.models.generate_content(
+    model="gemini-1.5-pro",
+    contents=["""give the recycle score value for the given image in total of 100. based on how different way it can be recycled.
 u can take these points into account
 Base Score
 Lining Deduction
@@ -53,12 +47,44 @@ Composting Potential Addition
 
 give the final score only
 add 3 ways we can reuse the object
-
+don't reply if object is a human or animal
 expected format: 
-response_str: {'score': $score, 'reuse': [{'title': title_of_first, 'content': content_of_first}, {'title': title_of_second, 'content': content_of_second},{...} ]}
+response_str: {'desc': $decription_of_object, 'score': $score, 'reuse': [{'title': title_of_first, 'content': content_of_first}, {'title': title_of_second, 'content': content_of_second},{...} ]}
 """, image])
-        res = response.text.replace('```json', '').replace('```', '').replace('response_str:', '')
-        res_json = json.loads(res.replace('\'','\"'))
-        return res_json
+    print(response.text)
+    res = response.text.replace('```json', '').replace('```', '').replace('response_str:', '')
+    res_json = json.loads(res.replace('\'','\"'))
+    return res_json
+
+# @app.post("/score")
+# async def get_score(request: Request):
+ 
+#         data: Dict = await request.json()
+#         image_data = data.get("image")
+
+#         if not image_data:
+#             raise HTTPException(status_code=400, detail="No image data provided")
+
+#         # Decode base64 image
+#         try:
+#             image = compress_image(image_data)
+#         except Exception as e:
+#             raise HTTPException(status_code=400, detail=f"Error decoding image: {e}")
+        
+#         response = client.models.generate_content(
+#             model="gemini-1.5-pro",
+#             contents=["""give the recycle score value for the given image in total of 100. based on how different way it can be recycled.
+# u can take these points into account
+# Base Score
+# Lining Deduction
+# Wax Deduction (Assumed less problematic)
+# Adhesive Deduction
+# Specialized Facility Addition
+# Composting Potential Addition
+# """, image])
+#         print(response)
+#         res = response.text.replace('```json', '').replace('```', '').replace('response_str:', '')
+#         res_json = json.loads(res.replace('\'','\"'))
+#         return res_json
 
 uvicorn.run(app, port=8000)

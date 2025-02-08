@@ -62,7 +62,8 @@ async function startCamera(deviceId) {
         console.error('Error starting camera:', error);
     }
 }
-async function capturePhoto() {
+
+async function captureAndSendPhoto() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const context = canvas.getContext('2d');
@@ -75,38 +76,47 @@ async function capturePhoto() {
 
     context.drawImage(video, 0, 0);
 
-    // Get image data as base64
-    const imageData = canvas.toDataURL('image/png');
+    // Convert canvas to Blob
+    canvas.toBlob(async (blob) => {
+        try {
+            const formData = new FormData();
+            formData.append('image', blob, 'captured_image.png'); // Add filename
 
-    try {
-        const response = await fetch('http://127.0.0.1:8000/score', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ image: imageData }) // Send base64 data
-        });
+            const response = await fetch('http://127.0.0.1:8000/score', {
+                method: 'POST',
+                body: formData
+            });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Score:', data.score); // Handle the score from the backend
-            // Optionally update the UI with the score
-            // Example:  document.getElementById('scoreDisplay').textContent = data.score;
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Score Response:', data);
+                // Handle the score response, e.g., display it on the page
+                // Example:
+                const scoreDisplay = document.getElementById('scoreDisplay'); // Assuming you have an element with this ID
+                if (scoreDisplay) {
+                    scoreDisplay.textContent = `Recycle Score: ${data.score}`;
+                }
 
-            // Show preview AFTER successful upload and potentially using backend-processed image
-            capturedImage.src = imageData; // Or data.processed_image if backend modifies it.
-            preview.classList.remove('hidden');
-
-        } else {
-            console.error('Error sending image:', response.status);
-            const errorData = await response.json(); // Try to get error details
-            console.error('Error details:', errorData); // Log details if available
-            alert("Error uploading image. Please check the console for details."); // Alert user
+            } else {
+                console.error('Error sending image:', response.status);
+                const errorDisplay = document.getElementById('errorDisplay');
+                if (errorDisplay) {
+                    errorDisplay.textContent = `Error: ${response.status} - ${response.statusText}`;
+                }
+            }
+        } catch (error) {
+            console.error('Error sending image:', error);
+            const errorDisplay = document.getElementById('errorDisplay');
+            if (errorDisplay) {
+                errorDisplay.textContent = `Error: ${error.message}`;
+            }
         }
-    } catch (error) {
-        console.error('Error sending image:', error);
-        alert("An error occurred. Please try again later."); // Alert user
-    }
+    }, 'image/png');
+
+
+    // Show preview (optional, you can keep this)
+    capturedImage.src = canvas.toDataURL('image/png');
+    preview.classList.remove('hidden');
 }
 
 // Switch camera
@@ -139,7 +149,7 @@ function downloadImage() {
 }
 
 // Event Listeners
-captureButton.addEventListener('click', capturePhoto);
+captureButton.addEventListener('click', captureAndSendPhoto);
 switchCameraButton.addEventListener('click', switchCamera);
 retakeButton.addEventListener('click', () => {
     preview.classList.add('hidden');
