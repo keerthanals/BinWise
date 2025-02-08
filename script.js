@@ -62,24 +62,51 @@ async function startCamera(deviceId) {
         console.error('Error starting camera:', error);
     }
 }
-
-// Capture photo
-function capturePhoto() {
+async function capturePhoto() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const context = canvas.getContext('2d');
-    
+
     // Flip horizontally if using front camera
     if (cameras[currentCameraIndex]?.label?.toLowerCase().includes('front')) {
         context.scale(-1, 1);
         context.translate(-canvas.width, 0);
     }
-    
+
     context.drawImage(video, 0, 0);
-    
-    // Show preview
-    capturedImage.src = canvas.toDataURL('image/png');
-    preview.classList.remove('hidden');
+
+    // Get image data as base64
+    const imageData = canvas.toDataURL('image/png');
+
+    try {
+        const response = await fetch('http://127.0.0.1:8000/score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ image: imageData }) // Send base64 data
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Score:', data.score); // Handle the score from the backend
+            // Optionally update the UI with the score
+            // Example:  document.getElementById('scoreDisplay').textContent = data.score;
+
+            // Show preview AFTER successful upload and potentially using backend-processed image
+            capturedImage.src = imageData; // Or data.processed_image if backend modifies it.
+            preview.classList.remove('hidden');
+
+        } else {
+            console.error('Error sending image:', response.status);
+            const errorData = await response.json(); // Try to get error details
+            console.error('Error details:', errorData); // Log details if available
+            alert("Error uploading image. Please check the console for details."); // Alert user
+        }
+    } catch (error) {
+        console.error('Error sending image:', error);
+        alert("An error occurred. Please try again later."); // Alert user
+    }
 }
 
 // Switch camera
