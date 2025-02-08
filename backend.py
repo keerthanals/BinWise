@@ -5,6 +5,7 @@ import io
 import base64
 from typing import Dict
 import uvicorn
+import json
 app = FastAPI()
 
 from google import genai
@@ -50,8 +51,14 @@ Adhesive Deduction
 Specialized Facility Addition
 Composting Potential Addition
 
-give the final score only""", image])
-        print(response.text)
-        return {'score': int(response.text) }
+give the final score only
+add 3 ways we can reuse the object
+
+expected format: 
+response_str: {'score': $score, 'reuse': [{'title': title_of_first, 'content': content_of_first}, {'title': title_of_second, 'content': content_of_second},{...} ]}
+""", image])
+        res = response.text.replace('```json', '').replace('```', '').replace('response_str:', '')
+        res_json = json.loads(res.replace('\'','\"'))
+        return res_json
 
 uvicorn.run(app, port=8000)
