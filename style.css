@@ -9,6 +9,16 @@
     --spacing: 24px;
 }
 
+/* Dark Mode Variables */
+.dark-mode {
+    --background: #121212;
+    --surface: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #bbbbbb;
+    --primary-color: #4a90e2;
+    --primary-hover: #357ab8;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -45,6 +55,20 @@ body {
 .app-header h1 {
     font-size: 24px;
     font-weight: 700;
+}
+
+/* Dark Mode Toggle Button */
+#darkModeToggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+#darkModeToggle:hover {
+    color: var(--text-primary);
 }
 
 .icon-button {

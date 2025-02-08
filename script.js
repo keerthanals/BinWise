@@ -123,3 +123,24 @@ uploadInput.addEventListener('change', handleFileUpload);
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', initializeCamera);
+
+const toggleButton = document.getElementById("darkModeToggle");
+const body = document.body;
+
+// Load dark mode preference from localStorage
+if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark-mode");
+    toggleButton.textContent = "🌞";
+}
+
+toggleButton.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+
+    if (body.classList.contains("dark-mode")) {
+        toggleButton.textContent = "🌞"; // Sun icon for light mode
+        localStorage.setItem("theme", "dark");
+    } else {
+        toggleButton.textContent = "🌙"; // Moon icon for dark mode
+        localStorage.setItem("theme", "light");
+    }
+});
