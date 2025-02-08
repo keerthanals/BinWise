@@ -1,5 +1,7 @@
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from PIL import Image
 import io
 import base64
@@ -23,7 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="static"), name="static")
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
@@ -63,5 +65,5 @@ response_str: {'desc': $decription_of_object, 'score': $score, 'reuse': [{'title
     res = response.text.replace('```json', '').replace('```', '').replace('response_str:', '')
     res_json = json.loads(res.replace('\'','\"'))
     return res_json
-
+app.mount("/", StaticFiles(directory="static"), name="static")
 uvicorn.run(app, port=8000)

@@ -1,0 +1,8 @@
+fastapi
+google-genai
+google-generativeai
+openai
+pillow
+pydantic
+python-multipart
+uvicorn
