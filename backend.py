@@ -23,6 +23,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/", StaticFiles(directory="static"), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    with open("static/index.html", "r", encoding="utf-8") as file:
+        html_content = file.read()
+    return HTMLResponse(content=html_content)
+
 @app.post("/score")
 async def get_recycle_score(image: UploadFile = File(...)):
     try:
