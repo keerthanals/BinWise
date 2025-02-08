@@ -5,7 +5,9 @@ const switchCameraButton = document.createElement('button');
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 
-let useFrontCamera = true; // Flag to track the active camera
+let currentStream = null; // Track current camera stream
+let cameras = []; // Store available cameras
+let currentCameraIndex = 0; // Track which camera is in use
 
 // Create Switch Camera Button
 switchCameraButton.innerText = "🔄 Switch Camera";
@@ -20,21 +22,39 @@ switchCameraButton.style.borderRadius = "5px";
 switchCameraButton.style.cursor = "pointer";
 document.body.appendChild(switchCameraButton);
 
-// Function to start the camera
-function startCamera() {
-    const constraints = {
-        video: {
-            facingMode: useFrontCamera ? "user" : "environment" // "user" for front, "environment" for rear
-        }
-    };
+// Function to get available cameras
+async function getCameras() {
+    try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        cameras = devices.filter(device => device.kind === 'videoinput');
+        console.log("Available Cameras:", cameras);
 
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then((stream) => {
-            video.srcObject = stream;
-        })
-        .catch((err) => {
-            console.error("Error accessing camera:", err);
-        });
+        if (cameras.length > 0) {
+            startCamera(cameras[currentCameraIndex].deviceId);
+        }
+    } catch (error) {
+        console.error("Error accessing cameras:", error);
+    }
+}
+
+// Function to start the camera
+async function startCamera(deviceId) {
+    if (currentStream) {
+        // Stop the previous stream before switching
+        currentStream.getTracks().forEach(track => track.stop());
+    }
+
+    try {
+        const constraints = {
+            video: { deviceId: { exact: deviceId } }
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        currentStream = stream;
+        video.srcObject = stream;
+    } catch (error) {
+        console.error("Error starting camera:", error);
+    }
 }
 
 // Capture image
@@ -51,9 +71,11 @@ captureButton.addEventListener('click', () => {
 
 // Switch Camera Button Click
 switchCameraButton.addEventListener('click', () => {
-    useFrontCamera = !useFrontCamera; // Toggle camera
-    startCamera();
+    if (cameras.length > 1) {
+        currentCameraIndex = (currentCameraIndex + 1) % cameras.length; // Switch camera index
+        startCamera(cameras[currentCameraIndex].deviceId);
+    }
 });
 
-// Start the camera initially
-startCamera();
+// Get and start the camera on load
+getCameras();
