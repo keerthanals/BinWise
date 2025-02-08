@@ -56,35 +56,4 @@ response_str: {'desc': $decription_of_object, 'score': $score, 'reuse': [{'title
     res_json = json.loads(res.replace('\'','\"'))
     return res_json
 
-# @app.post("/score")
-# async def get_score(request: Request):
- 
-#         data: Dict = await request.json()
-#         image_data = data.get("image")
-
-#         if not image_data:
-#             raise HTTPException(status_code=400, detail="No image data provided")
-
-#         # Decode base64 image
-#         try:
-#             image = compress_image(image_data)
-#         except Exception as e:
-#             raise HTTPException(status_code=400, detail=f"Error decoding image: {e}")
-        
-#         response = client.models.generate_content(
-#             model="gemini-1.5-pro",
-#             contents=["""give the recycle score value for the given image in total of 100. based on how different way it can be recycled.
-# u can take these points into account
-# Base Score
-# Lining Deduction
-# Wax Deduction (Assumed less problematic)
-# Adhesive Deduction
-# Specialized Facility Addition
-# Composting Potential Addition
-# """, image])
-#         print(response)
-#         res = response.text.replace('```json', '').replace('```', '').replace('response_str:', '')
-#         res_json = json.loads(res.replace('\'','\"'))
-#         return res_json
-
 uvicorn.run(app, port=8000)

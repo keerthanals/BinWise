@@ -6,7 +6,6 @@ const switchCameraButton = document.getElementById('switchCamera');
 const preview = document.getElementById('preview');
 const capturedImage = document.getElementById('capturedImage');
 const retakeButton = document.getElementById('retake');
-const downloadButton = document.getElementById('download');
 const uploadInput = document.getElementById('upload');
 
 // Global variables
@@ -19,7 +18,7 @@ async function initializeCamera() {
     try {
         const devices = await navigator.mediaDevices.enumerateDevices();
         cameras = devices.filter(device => device.kind === 'videoinput');
-        
+
         if (cameras.length > 0) {
             await startCamera(cameras[currentCameraIndex].deviceId);
             switchCameraButton.style.display = cameras.length > 1 ? 'block' : 'none';
@@ -50,12 +49,12 @@ async function startCamera(deviceId) {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         currentStream = stream;
         video.srcObject = stream;
-        
+
         // Wait for video to be ready
         await new Promise((resolve) => {
             video.onloadedmetadata = () => resolve();
         });
-        
+
         // Start playing
         await video.play();
     } catch (error) {
@@ -90,12 +89,9 @@ async function captureAndSendPhoto() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Score Response:', data);
-                // Handle the score response, e.g., display it on the page
-                // Example:
-                const scoreDisplay = document.getElementById('scoreDisplay'); // Assuming you have an element with this ID
-                if (scoreDisplay) {
-                    scoreDisplay.textContent = `Recycle Score: ${data.score}`;
-                }
+
+                // Show the popup
+                showPopup(data);
 
             } else {
                 console.error('Error sending image:', response.status);
@@ -112,12 +108,73 @@ async function captureAndSendPhoto() {
             }
         }
     }, 'image/png');
-
-
-    // Show preview (optional, you can keep this)
-    capturedImage.src = canvas.toDataURL('image/png');
-    preview.classList.remove('hidden');
 }
+
+
+function showPopup(data) {
+    const popup = document.createElement('div');
+    popup.classList.add('popup');
+
+    const popupContent = document.createElement('div');
+    popupContent.classList.add('popup-content');
+
+    const scoreElement = document.createElement('div');
+    scoreElement.classList.add('score-display');
+    scoreElement.textContent = `${data.score}`;
+
+    const descElement = document.createElement('div');
+    descElement.classList.add('desc-display');
+    descElement.textContent = data.desc;
+
+
+    const reuseTitle = document.createElement('h3');
+    reuseTitle.textContent = "Reuse Ideas";
+    popupContent.appendChild(reuseTitle);
+
+    const reuseList = document.createElement('ul');
+    data.reuse.forEach(item => {
+        const listItem = document.createElement('li');
+        const title = document.createElement('h4');
+        title.textContent = item.title;
+        const content = document.createElement('p');
+        content.textContent = item.content;
+        listItem.appendChild(title);
+        listItem.appendChild(content);
+        reuseList.appendChild(listItem);
+    });
+    popupContent.appendChild(reuseList);
+
+
+
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.classList.add('close-button');
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(popup);
+        preview.classList.add('hidden'); // Hide preview after closing popup
+        uploadInput.value = ''; // Clear file input
+    });
+
+    popupContent.appendChild(scoreElement);
+    popupContent.appendChild(descElement);
+    popupContent.appendChild(closeButton);
+    popup.appendChild(popupContent);
+    document.body.appendChild(popup);
+
+
+    // Optional: Add a backdrop to the popup
+    const popupBackdrop = document.createElement('div');
+    popupBackdrop.classList.add('popup-backdrop');
+    popupBackdrop.addEventListener('click', () => {
+        document.body.removeChild(popup);
+        preview.classList.add('hidden');
+        uploadInput.value = '';
+    });
+    document.body.appendChild(popupBackdrop);
+
+}
+
+
 
 // Switch camera
 function switchCamera() {
@@ -140,14 +197,6 @@ function handleFileUpload(event) {
     }
 }
 
-// Download image
-function downloadImage() {
-    const link = document.createElement('a');
-    link.download = 'binwise-capture.png';
-    link.href = capturedImage.src;
-    link.click();
-}
-
 // Event Listeners
 captureButton.addEventListener('click', captureAndSendPhoto);
 switchCameraButton.addEventListener('click', switchCamera);
@@ -155,7 +204,6 @@ retakeButton.addEventListener('click', () => {
     preview.classList.add('hidden');
     uploadInput.value = '';
 });
-downloadButton.addEventListener('click', downloadImage);
 uploadInput.addEventListener('change', handleFileUpload);
 
 // Initialize on load
