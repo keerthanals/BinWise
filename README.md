@@ -32,8 +32,6 @@ For Software:
 - Tools used:Google Gemini-1.5-pro AI model
 
 
-### Implementation
-For Software:
 # Installation
 # Install required Python packages
 pip install -r requirements.txt
