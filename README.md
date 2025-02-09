@@ -11,7 +11,7 @@
 - Member 3: Sreya Sudheer N - Govt.Engineering College Thrissur
 
 ### Hosted Project Link
-[mention your project hosted project link here]
+https://binwise-mvut.onrender.com/
 
 ### Project Description
 Ever wondered if your trash is treasure? Binwise uses AI to analyze objects, score their recyclability, and suggest the best ways to recycle them. Let’s turn waste into wisdom! ♻️
@@ -37,9 +37,6 @@ For Software:
 # Installation
 # Install required Python packages
 pip install fastapi python-multipart pillow google-generative-ai uvicorn
-
-# Set up environment
-export GOOGLE_API_KEY="your-api-key-here"
 
 # Create static directory
 mkdir static]
@@ -85,11 +82,9 @@ Results returned to user with reuse suggestions*
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
+https://github.com/keerthanals/BinWise/blob/main/project_video.mp4
+*Explained in video*
 
-# Additional Demos
-[Add any extra demo materials/links]
 
 ## Team Contributions
 - Keerthana L S: Frontend development including HTML, CSS, and JavaScript implementation
