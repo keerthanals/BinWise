@@ -15,7 +15,7 @@ from google.genai import types
 
 import PIL.Image
 
-client = genai.Client(api_key="AIzaSyB2_KkrzesGnWpe33Vm7vMr3R3lacvT5x4")
+client = genai.Client(api_key="AIzaSyDHCXvHyVdX6w7mMEu0bQSHeC3JWPb9slw")
 # Add CORS middleware to allow cross-origin requests from your frontend
 app.add_middleware(
     CORSMiddleware,
@@ -33,12 +33,16 @@ async def home():
         html_content = file.read()
     return HTMLResponse(content=html_content)
 
+
+
+
+
 @app.post("/score")
 async def get_recycle_score(image: UploadFile = File(...)):
     try:
         contents = await image.read()
         image = Image.open(io.BytesIO(contents)).convert("RGB") # Convert to RGB to handle various image formats
-
+        image = compress_image(image)
       
 
     except Exception as e:
