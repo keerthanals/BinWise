@@ -45,18 +45,18 @@ mkdir static]
 [# Start the FastAPI server
 uvicorn main:app --reload]
 
-### Project Documentation
-For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+https://github.com/keerthanals/BinWise/blob/main/project_image_1.jpg
+Final output
 
 ![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+https://github.com/keerthanals/BinWise/blob/main/project_image_2.jpg
+Ui with dark mode
 
 ![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+https://github.com/keerthanals/BinWise/blob/main/project_image_3.jpg
+Ui with light mode
 
 # Diagrams
 ![Workflow] https://github.com/keerthanals/BinWise/commit/d1ea4a2ebdfc26f240df5ee197975871b11954f7
@@ -67,18 +67,6 @@ System calculates recyclability score
 Results returned to user with reuse suggestions*
 
 
-# Build Photos
-![Team](Add photo of your team here)
-
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
