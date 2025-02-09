@@ -15,7 +15,7 @@ from google.genai import types
 
 import PIL.Image
 
-client = genai.Client(api_key="AIzaSyA2D5SILB7r5W6RgW7oxFn0i_IA6mE5Nw0")
+client = genai.Client(api_key="AIzaSyB2_KkrzesGnWpe33Vm7vMr3R3lacvT5x4")
 # Add CORS middleware to allow cross-origin requests from your frontend
 app.add_middleware(
     CORSMiddleware,

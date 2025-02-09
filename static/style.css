@@ -322,4 +322,409 @@ body.dark-mode .score-display {
 body.dark-mode .close-button {
     background-color: #61dafb;
     color: #333;
+}.preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    padding: calc(var(--spacing) + var(--safe-area-top)) var(--spacing) calc(var(--spacing) + var(--safe-area-bottom));
+}
+
+
+:root {
+--primary-color: #2DD4BF;
+--primary-hover: #14B8A6;
+--background: #F9FAFB;
+--surface: #FFFFFF;
+--text-primary: #111827;
+--text-secondary: #6B7280;
+--border-radius: 20px;
+--spacing: 20px;
+--safe-area-top: env(safe-area-inset-top, 0px);
+--safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.dark-mode {
+--background: #111827;
+--surface: #1F2937;
+--text-primary: #F9FAFB;
+--text-secondary: #D1D5DB;
+--primary-color: #2DD4BF;
+--primary-hover: #14B8A6;
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+-webkit-tap-highlight-color: transparent;
+}
+
+body {
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+background: var(--background);
+color: var(--text-primary);
+min-height: 100vh;
+min-height: -webkit-fill-available;
+display: flex;
+flex-direction: column;
+}
+
+.app-container {
+flex: 1;
+max-width: 100%;
+background: var(--surface);
+display: flex;
+flex-direction: column;
+height: 100vh;
+height: -webkit-fill-available;
+}
+
+.app-header {
+padding: calc(var(--spacing) + var(--safe-area-top)) var(--spacing) var(--spacing);
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: var(--surface);
+border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.app-header h1 {
+font-size: 24px;
+font-weight: 700;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.grp {
+display: flex;
+gap: 12px;
+}
+
+.icon-button {
+width: 40px;
+height: 40px;
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: var(--background);
+color: var(--text-secondary);
+transition: all 0.2s ease;
+border: none;
+cursor: pointer;
+}
+
+.icon-button:hover {
+background: var(--primary-color);
+color: white;
+}
+
+.camera-container {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: var(--spacing);
+gap: var(--spacing);
+}
+
+.camera-view {
+flex: 1;
+position: relative;
+width: 50%;
+border-radius: var(--border-radius);
+overflow: hidden;
+background: #000;
+aspect-ratio: 3/4;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+video {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+canvas {
+display: none;
+}
+
+.camera-controls {
+padding: var(--spacing) 0;
+display: flex;
+justify-content: center;
+gap: var(--spacing);
+}
+
+.capture-button {
+width: 72px;
+height: 72px;
+border-radius: 50%;
+background: white;
+border: 3px solid var(--primary-color);
+padding: 3px;
+cursor: pointer;
+transition: transform 0.2s ease;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.capture-button-inner {
+display: block;
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: var(--primary-color);
+transition: transform 0.15s ease;
+}
+
+.capture-button:active .capture-button-inner {
+transform: scale(0.9);
+}
+
+.file-upload {
+margin-bottom: calc(var(--spacing) + var(--safe-area-bottom));
+}
+
+.upload-label {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+padding: 16px;
+background: var(--background);
+border-radius: 16px;
+color: var(--text-secondary);
+font-weight: 500;
+transition: all 0.2s ease;
+cursor: pointer;
+}
+
+.upload-label:active {
+background: var(--primary-color);
+color: white;
+}
+
+input[type="file"] {
+display: none;
+}
+
+.preview {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 80%;
+height: 100%;
+background: var(--background);
+display: flex;
+flex-direction: column;
+z-index: 1000;
+padding: calc(var(--spacing) + var(--safe-area-top)) var(--spacing) calc(var(--spacing) + var(--safe-area-bottom));
+}
+
+.preview.hidden {
+display: none;
+}
+
+.preview-content {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: var(--spacing);
+}
+
+.preview-content img {
+width: 100%;
+height: auto;
+border-radius: var(--border-radius);
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.preview-controls {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+padding: var(--spacing) 0;
+}
+
+.preview-controls button {
+padding: 16px;
+border: none;
+border-radius: 14px;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+
+.secondary-button {
+background: var(--background);
+color: var(--text-primary);
+}
+
+.primary-button {
+background: var(--primary-color);
+color: white;
+}
+
+.primary-button:active {
+background: var(--primary-hover);
+}
+
+.popup {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: calc(100% - 32px);
+max-width: 400px;
+background: var(--surface);
+padding: 24px;
+border-radius: 24px;
+box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+z-index: 1001;
+}
+
+.popup-content {
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.score-display {
+font-size: 48px;
+font-weight: 700;
+color: var(--primary-color);
+text-align: center;
+}
+
+.desc-display {
+font-size: 16px;
+line-height: 1.5;
+color: var(--text-secondary);
+text-align: center;
+}
+
+.popup h3 {
+font-size: 20px;
+font-weight: 600;
+color: var(--text-primary);
+margin-top: 8px;
+}
+
+.popup h4 {
+font-size: 16px;
+font-weight: 600;
+color: var(--text-primary);
+margin-top: 16px;
+}
+
+.popup ul {
+list-style: none;
+padding: 0;
+}
+
+.popup li {
+margin-bottom: 16px;
+padding: 16px;
+background: var(--background);
+border-radius: 12px;
+}
+
+.popup li p {
+margin-top: 8px;
+color: var(--text-secondary);
+line-height: 1.5;
+}
+
+.close-button {
+width: 100%;
+padding: 16px;
+background: var(--primary-color);
+color: white;
+border: none;
+border-radius: 14px;
+font-size: 16px;
+font-weight: 600;
+margin-top: 8px;
+cursor: pointer;
+}
+
+.close-button:active {
+background: var(--primary-hover);
+}
+
+.popup-backdrop {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.4);
+backdrop-filter: blur(4px);
+z-index: 1000;
+}
+
+@media (max-width: 380px) {
+:root {
+    --spacing: 16px;
+    --border-radius: 16px;
+}
+
+.app-header h1 {
+    font-size: 20px;
+}
+
+.capture-button {
+    width: 64px;
+    height: 64px;
+}
+
+.preview-controls button {
+    padding: 14px;
+    font-size: 15px;
+}
+
+.camera-view {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 3/4;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+}
+.title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.title-container h1 {
+    font-family: 'Poppins', sans-serif; /* Modern and clean font */
+    font-size: 2rem; /* Adjust size as needed */
+    font-weight: 700; /* Bold for emphasis */
+    color: #ffffff; /* Eco-friendly green shade */
+    margin-bottom: 5px; /* Slight spacing between h1 and p */
+}
+
+.title-container p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem; /* Slightly smaller than h1 */
+    font-weight: 500; /* Medium weight for readability */
+    color: #fdfffe; /* Complementary green shade */
+    letter-spacing: 0.5px; /* Improves readability */
 }
