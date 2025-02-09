@@ -36,11 +36,7 @@ For Software:
 For Software:
 # Installation
 # Install required Python packages
-pip install fastapi python-multipart pillow google-generative-ai uvicorn
-
-# Create static directory
-mkdir static]
-
+pip install -r requirements.txt
 # Run
 [# Start the FastAPI server
 uvicorn main:app --reload]
