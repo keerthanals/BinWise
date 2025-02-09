@@ -81,7 +81,7 @@ async function captureAndSendPhoto() {
             const formData = new FormData();
             formData.append('image', blob, 'captured_image.png'); // Add filename
 
-            const response = await fetch('http://127.0.0.1:8000/score', {
+            const response = await fetch('/score', {
                 method: 'POST',
                 body: formData
             });
