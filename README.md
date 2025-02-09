@@ -53,12 +53,13 @@ https://github.com/keerthanals/BinWise/blob/main/project_image_3.jpg
 Ui with light mode
 
 # Diagrams
-![Workflow] https://github.com/keerthanals/BinWise/commit/d1ea4a2ebdfc26f240df5ee197975871b11954f7
-*User uploads image
-Backend processes image using FastAPI
-Google Gemini AI analyzes image
-System calculates recyclability score
-Results returned to user with reuse suggestions*
+![Workflow] 
+https://github.com/keerthanals/BinWise/commit/d1ea4a2ebdfc26f240df5ee197975871b11954f7
+-User uploads image
+-Backend processes image using FastAPI
+-Google Gemini AI analyzes image
+-System calculates recyclability score
+-Results returned to user with reuse suggestions
 
 
 
