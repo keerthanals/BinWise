@@ -29,20 +29,24 @@ For Software:
 - [Languages used:html,css,javascript,python]
 - [Frameworks used:Fast API]
 - [Libraries used:Fast API]
-- [Tools used]
+- [Tools used:Google Gemini-1.5-pro AI model]
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+[# Install required Python packages
+pip install fastapi python-multipart pillow google-generative-ai uvicorn
+
+# Set up environment
+export GOOGLE_API_KEY="your-api-key-here"
+
+# Create static directory
+mkdir static]
 
 # Run
-[commands]
+[# Start the FastAPI server
+uvicorn main:app --reload]
 
 ### Project Documentation
 For Software:
@@ -58,8 +62,12 @@ For Software:
 *Add caption explaining what this shows*
 
 # Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
+![Workflow] https://github.com/keerthanals/BinWise/commit/d1ea4a2ebdfc26f240df5ee197975871b11954f7
+*User uploads image
+Backend processes image using FastAPI
+Google Gemini AI analyzes image
+System calculates recyclability score
+Results returned to user with reuse suggestions*
 
 For Hardware:
 
@@ -92,9 +100,9 @@ For Hardware:
 [Add any extra demo materials/links]
 
 ## Team Contributions
-- [Keerthana L S]: [Frontend]
-- [Diya Smitha]: [Backend]
-- [Sreya Sudheer N]: [UI]
+- Keerthana L S: Frontend development including HTML, CSS, and JavaScript implementation
+- Diya Smitha: Backend development with FastAPI and Google Gemini AI integration
+- Sreya Sudheer N: UI design and user experience optimization
 
 ---
 Made with ❤️ at TinkerHub
