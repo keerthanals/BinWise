@@ -66,4 +66,4 @@ response_str: {'desc': $decription_of_object, 'score': $score, 'reuse': [{'title
     res_json = json.loads(res.replace('\'','\"'))
     return res_json
 app.mount("/", StaticFiles(directory="static"), name="static")
-uvicorn.run(app, port=8000)
+# uvicorn.run(app, port=8000)
