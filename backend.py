@@ -42,7 +42,6 @@ async def get_recycle_score(image: UploadFile = File(...)):
     try:
         contents = await image.read()
         image = Image.open(io.BytesIO(contents)).convert("RGB") # Convert to RGB to handle various image formats
-        image = compress_image(image)
       
 
     except Exception as e:
