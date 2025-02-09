@@ -2,40 +2,40 @@
 
 
 ## Basic Details
-### Team Name: [She.Codes]
+### Team Name: She.Codes
 
 
 ### Team Members
-- Member 1: [Keerthana L S] - [St. Josephs's College, Devagiri]
-- Member 2: [Diya Smitha] - [St. Josephs's College, Devagiri]
-- Member 3: [Sreya Sudheer N] - [Govt.Engineering College Thrissur]
+- Member 1: Keerthana L S - St. Josephs's College, Devagiri
+- Member 2: Diya Smitha - St. Josephs's College, Devagiri
+- Member 3: Sreya Sudheer N - Govt.Engineering College Thrissur
 
 ### Hosted Project Link
 [mention your project hosted project link here]
 
 ### Project Description
-[Ever wondered if your trash is treasure? Binwise uses AI to analyze objects, score their recyclability, and suggest the best ways to recycle them. Let’s turn waste into wisdom! ♻️]
+Ever wondered if your trash is treasure? Binwise uses AI to analyze objects, score their recyclability, and suggest the best ways to recycle them. Let’s turn waste into wisdom! ♻️
 
 ### The Problem statement
-[The absence of clear recycling guidance and motivation results in recyclable materials being discarded, contributing to pollution and resource depletion.]
+The absence of clear recycling guidance and motivation results in recyclable materials being discarded, contributing to pollution and resource depletion.
 
 ### The Solution
-[Binwise uses AI to identify objects, generate a recyclability score, and provide clear recycling methods, making the process simple and accessible. By educating and inspiring users, it promotes responsible recycling and reduces environmental waste.
-]
+Binwise uses AI to identify objects, generate a recyclability score, and provide clear recycling methods, making the process simple and accessible. By educating and inspiring users, it promotes responsible recycling and reduces environmental waste.
+
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used:html,css,javascript,python]
-- [Frameworks used:Fast API]
-- [Libraries used:Fast API]
-- [Tools used:Google Gemini-1.5-pro AI model]
+- Languages used:html,css,javascript,python
+- Frameworks used:Fast API
+- Libraries used:Fast API
+- Tools used:Google Gemini-1.5-pro AI model
 
 
 ### Implementation
 For Software:
 # Installation
-[# Install required Python packages
+# Install required Python packages
 pip install fastapi python-multipart pillow google-generative-ai uvicorn
 
 # Set up environment
@@ -69,14 +69,6 @@ Google Gemini AI analyzes image
 System calculates recyclability score
 Results returned to user with reuse suggestions*
 
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
 
 # Build Photos
 ![Team](Add photo of your team here)
