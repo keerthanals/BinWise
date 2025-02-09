@@ -336,6 +336,7 @@ body.dark-mode .close-button {
 }
 
 
+
 :root {
 --primary-color: #2DD4BF;
 --primary-hover: #14B8A6;
@@ -717,7 +718,7 @@ z-index: 1000;
     font-family: 'Poppins', sans-serif; /* Modern and clean font */
     font-size: 2rem; /* Adjust size as needed */
     font-weight: 700; /* Bold for emphasis */
-    color: #ffffff; /* Eco-friendly green shade */
+    color: #000000; /* Eco-friendly green shade */
     margin-bottom: 5px; /* Slight spacing between h1 and p */
 }
 
@@ -725,6 +726,24 @@ z-index: 1000;
     font-family: 'Poppins', sans-serif;
     font-size: 1.2rem; /* Slightly smaller than h1 */
     font-weight: 500; /* Medium weight for readability */
-    color: #fdfffe; /* Complementary green shade */
+    color: #000000; /* Complementary green shade */
     letter-spacing: 0.5px; /* Improves readability */
+}
+
+ /* Dark Mode Styles */
+ .dark-mode {
+    background-color: black;
+}
+
+.dark-mode .title-container h1,
+.dark-mode .title-container p {
+    color: rgb(253, 252, 252); /* Change text color to black */
+}
+
+#darkModeToggle {
+    cursor: pointer;
+    font-size: 1.5rem;
+    border: none;
+    background: none;
+    padding: 10px;
 }
